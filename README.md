@@ -39,3 +39,4 @@ Mas detalles en:
     liquibase --changeLogFile="changesets/db.changelog-#.#.#.#.xml" diffChangeLog
 
 ## corregi un error
+## mi error hotfix
