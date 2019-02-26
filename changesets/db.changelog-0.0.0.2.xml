@@ -82,9 +82,6 @@
 	    </createTable>
 
         <createTable tableName="JUNCTION_ROLE_USER">
-            <column name="ID_JUNCTION" type="int">
-            </column>
-
             <column name="ID_USER" type="int">
                 <constraints nullable="false"/>
             </column>
