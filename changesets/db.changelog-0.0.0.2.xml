@@ -6,71 +6,119 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"> 
     <changeSet author="evanny" id="20190224-1">
 
-        <createTable tableName="DIRECCION">
-            <column autoIncrement="true" name="DIR_ID" type="int">
-                <constraints primaryKey="true" primaryKeyName="PK_DIRECCION"/>
+        <createTable tableName="ADDRESS">
+            <column autoIncrement="true" name="ID_ADDRESS" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_ADDRESS"/>
             </column>
-            <column name="DIR_CALLE" type="nvarchar(40)">
+
+            <column name="ADD_STREET" type="nvarchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="DIR_NUMERO" type="int">
+
+            <column name="ADD_NUMBER" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="DIR_COLONIA" type="nvarchar(30)">
+
+            <column name="ADD_CITY" type="nvarchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="DIR_CIUDAD" type="nvarchar(40)">
+
+            <column name="ADD_STATE" type="nvarchar(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="DIR_CP" type="int">
+
+            <column name="ADD_COUNTRY" type="nvarchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="ADD_CP" type="int">
                 <constraints nullable="false"/>
             </column>
 	    </createTable>
 
-        <createTable tableName="PERMISOS">
-            <column autoIncrement="true" name="PER_ID" type="int">
-                <constraints primaryKey="true" primaryKeyName="PK_PERMISOS"/>
+        <createTable tableName="ROLE">
+            <column autoIncrement="true" name="ID_ROLE" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_ROLE"/>
             </column>
-            <column name="PER_NOMBRE" type="nvarchar(20)">
+
+            <column name="ROLE_TYPE" type="nvarchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PER_FUNCION" type="nvarchar(50)">
+
+            <column name="ROLE_PERMISSIONS" type="nvarchar(50)">
                 <constraints nullable="false"/>
             </column>
 	    </createTable>
 
-        <createTable tableName="EMPLEADO">
-            <column autoIncrement="true" name="EMP_ID" type="int">
-                <constraints primaryKey="true" primaryKeyName="PK_EMPLEADO"/>
+        <createTable tableName="USER">
+            <column autoIncrement="true" name="ID_USER" type="int">
+                <constraints primaryKey="true" primaryKeyName="PK_USER"/>
             </column>
-            <column name="EMP_NOMBRE" type="nvarchar(30)">
+
+            <column name="USR_NAME" type="nvarchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMP_APELLIDOP" type="nvarchar(30)">
+
+            <column name="USR_LASTNAME" type="nvarchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMP_APELLIDOM" type="nvarchar(30)">
+
+            <column name="USR_AGE" type="int(3)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMP_EDAD" type="int(3)">
+
+            <column name="USR_USERNAME" type="nvarchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMP_PERMISO" type="int">
-                <constraints nullable="false" foreignKeyName="FK_EMP_PERMISO_PER_ID" references="PERMISOS(PER_ID)"/>
-            </column>
-            <column name="EMP_EMAIL" type="nvarchar(50)">
+
+            <column name="USR_PASSWORD" type="nvarchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMP_TELEFONO" type="int(12)">
+
+            <column name="USR_ADDRESS" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="EMP_DIRECCION" type="int">
-                <constraints nullable="false" foreignKeyName="FK_EMP_DIRECCION_DIR_ID" references="DIRECCION(DIR_ID)"/>
+
+	    </createTable>
+
+        <createTable tableName="JUNCTION_ROLE_USER">
+            <column name="ID_JUNCTION" type="int">
             </column>
-            <column name="EMP_ACTIVO" type="bit">
+
+            <column name="ID_USER" type="int">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_ROLE" type="int">
                 <constraints nullable="false"/>
             </column>
 	    </createTable>
 
+    </changeSet>
+    
+    <changeSet author="evanny" id="20190224-2">
+        <addForeignKeyConstraint baseColumnNames="ID_ROLE"
+            baseTableName="JUNCTION_ROLE_USER"
+            constraintName="fk_ROLE_J"
+            referencedColumnNames="ID_ROLE"
+            referencedTableName="ROLE"/>
+
+        <addForeignKeyConstraint baseColumnNames="ID_USER"
+            baseTableName="JUNCTION_ROLE_USER"
+            constraintName="fk_USER_J"
+            referencedColumnNames="ID_USER"
+            referencedTableName="USER"/>
+
+        <addPrimaryKey 
+            columnNames="ID_USER, ID_ROLE"
+            constraintName="PK_JUNCTION"
+            tableName="JUNCTION_ROLE_USER"
+            />
+
+        <addForeignKeyConstraint baseColumnNames="USR_ADDRESS"
+            baseTableName="USER"
+            constraintName="fk_address"
+            referencedColumnNames="ID_ADDRESS"
+            referencedTableName="ADDRESS"/>
     </changeSet>
 </databaseChangeLog> 
